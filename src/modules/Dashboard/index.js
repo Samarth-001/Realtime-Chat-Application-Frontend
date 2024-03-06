@@ -36,13 +36,25 @@ const Dashboard = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   const fetchConversations=async()=>{}
-  // },[])
+  useEffect(() => {
+    const fetchConversations = async () => {
+      const loggenInUser = JSON.parse(localStorage.getItem('user:detail'))
+      const res = await fetch(`http://localhost:8000/api/conversations/${loggenInUser.id}`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": 'application/json',
+        }
+      })
+      const resData = await res.json();
+      setConversations(resData);
+    }
+    fetchConversations();
+  }, [])
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user:detail')))
   const [conversations, setConversations] = useState([])
   console.log(user);
+  console.log(conversations);
 
   return (
     <div className="w-full flex">
@@ -58,13 +70,13 @@ const Dashboard = () => {
         <div className="mx-9">
           <div>Messages</div>
           <div className="">
-            {contacts.map(({ name, status, img }) => {
+            {conversations.map(({ conversationId, secondUser }) => {
               return (
                 <div className="flex items-center my-8 pb-3 border-b border-b-gray-300">
-                  <img src={img} alt="Profile pic" width={45} height={45} />
+                  <img src={Avatar} alt="Profile pic" width={45} height={45} />
                   <div className="ml-4">
-                    <h3 className="text-xl">{name}</h3>
-                    <p className="font-light">{status}</p>
+                    <h3 className="text-xl">{secondUser?.fullName}</h3>
+                    <p className="font-light">{secondUser?.email}</p>
                   </div>
                 </div>
               );
