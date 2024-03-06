@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import Avatar from "../../assets/Avatar.png";
 import InputComp from "../../components/Input/InputComp";
 
@@ -35,13 +35,22 @@ const Dashboard = () => {
       img: Avatar,
     },
   ];
+
+  // useEffect(() => {
+  //   const fetchConversations=async()=>{}
+  // },[])
+
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user:detail')))
+  const [conversations, setConversations] = useState([])
+  console.log(user);
+
   return (
     <div className="w-full flex">
       <div className="w-[25%] bg-secondary">
         <div className="flex justify-center items-center my-8">
           <img src={Avatar} alt="Profile pic" width={60} height={60} />
           <div className="ml-4">
-            <h3 className="text-2xl">Tutorials Dev</h3>
+            <h3 className="text-2xl">{user?.fullName}</h3>
             <p className="text-lg font-light">My Account</p>
           </div>
         </div>
